@@ -1,11 +1,14 @@
 ﻿using CentralOpticAPI.Datos;
 using CentralOpticAPI.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/factura")]
+    [Authorize(Roles = ("Administrador"))]
     public class CFactura :Controller
     {
         [HttpGet]

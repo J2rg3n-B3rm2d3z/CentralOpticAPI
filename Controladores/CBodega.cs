@@ -1,11 +1,13 @@
 ﻿using CentralOpticAPI.Datos;
 using CentralOpticAPI.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/bodega")]
+    [Authorize(Roles = ("Administrador"))]
     public class CBodega : Controller
     {
         [HttpGet]
