@@ -1,11 +1,14 @@
 ﻿using CentralOpticAPI.Modelos;
 using CentralOpticAPI.Datos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/telefonoempleado")]
+    [Authorize(Roles = ("Administrador"))]
     public class CEmpleadoTelefonoEmpleado:Controller
     {
         [HttpGet]

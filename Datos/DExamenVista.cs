@@ -2,6 +2,7 @@
 using CentralOpticAPI.Modelos;
 using System.Data.SqlClient;
 using System.Data;
+using CentralOpticAPI.Controladores;
 
 namespace CentralOpticAPI.Datos
 {
@@ -27,9 +28,10 @@ namespace CentralOpticAPI.Datos
                             mExamenVista.CodCliente = (int)item["CodCliente"];
                             mExamenVista.OjoIzquierdo = (decimal)item["OjoIzquierdo"];
                             mExamenVista.OjoDerecho = (decimal)item["OjoDerecho"];
-                            mExamenVista.DescripLenteIzq = (string)item["DescripLenteIzq"];
-                            mExamenVista.DescripLenteDer = (string)item["DescripLenteDer"];
-
+                            if (!item.IsDBNull(item.GetOrdinal("DescripLenteIzq")))
+                                mExamenVista.DescripLenteIzq = (string)item["DescripLenteIzq"];
+                            if (!item.IsDBNull(item.GetOrdinal("DescripLenteDer")))
+                                mExamenVista.DescripLenteDer = (string)item["DescripLenteDer"];
                             lista.Add(mExamenVista);
                         }
                     }
@@ -45,13 +47,12 @@ namespace CentralOpticAPI.Datos
                 using (var cmd = new SqlCommand("insertarExamenVista", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@NumExamen", parametros.NumExamen);
                     cmd.Parameters.AddWithValue("@CodCliente", parametros.CodCliente);
                     cmd.Parameters.AddWithValue("@IdFechaExamen", parametros.IdFechaExamen);
                     cmd.Parameters.AddWithValue("@OjoIzquierdo", parametros.OjoIzquierdo);
                     cmd.Parameters.AddWithValue("@OjoDerecho", parametros.OjoDerecho);
-                    cmd.Parameters.AddWithValue("@DescripLenteIzq", parametros.DescripLenteIzq);
-                    cmd.Parameters.AddWithValue("@DescripLenteDer",parametros.DescripLenteDer);
+                    cmd.Parameters.AddWithValue("@DescripLenteIzq", SqlDbType.NVarChar).Value = (object)parametros.DescripLenteIzq ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@DescripLenteDer", SqlDbType.NVarChar).Value = (object)parametros.DescripLenteDer ?? DBNull.Value;
 
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
@@ -64,7 +65,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("editarVistaExamen", sql))
+                using (var cmd = new SqlCommand("editarExamenVista", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -73,8 +74,9 @@ namespace CentralOpticAPI.Datos
                     cmd.Parameters.AddWithValue("@IdFechaExamen", parametros.IdFechaExamen);
                     cmd.Parameters.AddWithValue("@OjoIzquierdo", parametros.OjoIzquierdo);
                     cmd.Parameters.AddWithValue("@OjoDerecho", parametros.OjoDerecho);
-                    cmd.Parameters.AddWithValue("@DescripLenteIzq", parametros.DescripLenteIzq);
-                    cmd.Parameters.AddWithValue("@DescripLenteDer", parametros.DescripLenteDer);
+                    cmd.Parameters.AddWithValue("@DescripLenteIzq", SqlDbType.NVarChar).Value = (object)parametros.DescripLenteIzq ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@DescripLenteDer", SqlDbType.NVarChar).Value = (object)parametros.DescripLenteDer ?? DBNull.Value;
+
 
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
@@ -91,7 +93,7 @@ namespace CentralOpticAPI.Datos
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@NumEmpleado", parametros.NumExamen);
+                    cmd.Parameters.AddWithValue("@NumExamen", parametros.NumExamen);
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
 

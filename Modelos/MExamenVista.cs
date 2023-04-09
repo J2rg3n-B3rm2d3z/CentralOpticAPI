@@ -7,8 +7,8 @@
         public int IdFechaExamen { get; set; }
         public decimal OjoIzquierdo { get; set; }
         public decimal OjoDerecho { get; set; }
-        public string DescripLenteIzq { get; set; }
-        public string DescripLenteDer { get; set; }
+        public string? DescripLenteIzq { get; set; }
+        public string? DescripLenteDer { get; set; }
 
     }
 }

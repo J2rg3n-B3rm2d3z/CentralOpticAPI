@@ -1,11 +1,14 @@
 ﻿using CentralOpticAPI.Datos;
 using CentralOpticAPI.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/fechaobtencion")]
+    [Authorize(Roles = ("Administrador"))]
     public class CProveedorFechaObtencion : Controller
     {
         [HttpGet]
@@ -33,11 +36,11 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{IdFechaObtencion}")]
-        public async Task<ActionResult> Delete(int IdProveedorFechaObtencion)
+        public async Task<ActionResult> Delete(int IdFechaObtencion)
         {
             var funcion = new DProveedorFechaObtencion();
             var parametros = new MProveedorFechaObtencion();
-            parametros.IdFechaObtencion = IdProveedorFechaObtencion;
+            parametros.IdFechaObtencion = IdFechaObtencion;
             await funcion.EliminarFechaObtencion(parametros);
             return NoContent();
 

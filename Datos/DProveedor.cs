@@ -2,6 +2,7 @@
 using CentralOpticAPI.Modelos;
 using System.Data.SqlClient;
 using System.Data;
+using CentralOpticAPI.Controladores;
 
 namespace CentralOpticAPI.Datos
 {
@@ -25,7 +26,8 @@ namespace CentralOpticAPI.Datos
                             mProveedor.IdProveedor = (int)item["IdProveedor"];
                             mProveedor.Nombre = (string)item["Nombre"];
                             mProveedor.Direccion = (string)item["Direccion"];
-                            mProveedor.Propietario = (string)item["Propietario"];
+                            if (!item.IsDBNull(item.GetOrdinal("Propietario")))
+                                mProveedor.Propietario = (string)item["Propietario"];
                             lista.Add(mProveedor);
                         }
                     }
@@ -38,11 +40,11 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("insertarEmpleado", sql))
+                using (var cmd = new SqlCommand("insertarProveedor", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Nombre", parametros.Nombre);
-                    cmd.Parameters.AddWithValue("@Propietario", parametros.Propietario);
+                    cmd.Parameters.AddWithValue("@Propietario", SqlDbType.NVarChar).Value = (object)parametros.Propietario ?? DBNull.Value;
                     cmd.Parameters.AddWithValue("@Direccion", parametros.Direccion);
 
                     await sql.OpenAsync();
@@ -62,7 +64,7 @@ namespace CentralOpticAPI.Datos
 
                     cmd.Parameters.AddWithValue("@IdProveedor", parametros.IdProveedor);
                     cmd.Parameters.AddWithValue("@Nombre", parametros.Nombre);
-                    cmd.Parameters.AddWithValue("@Propietario", parametros.Propietario);
+                    cmd.Parameters.AddWithValue("@Propietario", SqlDbType.NVarChar).Value = (object)parametros.Propietario ?? DBNull.Value;
                     cmd.Parameters.AddWithValue("@Direccion", parametros.Direccion);
 
                     await sql.OpenAsync();

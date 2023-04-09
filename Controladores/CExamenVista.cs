@@ -1,11 +1,14 @@
 ﻿using CentralOpticAPI.Datos;
 using CentralOpticAPI.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/examenvista")]
+    [Authorize(Roles = ("Administrador"))]
     public class CExamenVista : Controller
     {
         [HttpGet]
@@ -24,20 +27,20 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{NumExamenVista}")]
-        public async Task<ActionResult> Put(int NumExamen, [FromBody] MExamenVista parametros)
+        public async Task<ActionResult> Put(int NumExamenVista, [FromBody] MExamenVista parametros)
         {
             var funcion = new DExamenVista();
-            parametros.NumExamen = NumExamen;
+            parametros.NumExamen = NumExamenVista;
             await funcion.EditarExamenVista(parametros);
             return NoContent();
         }
 
         [HttpDelete("{NumExamenVista}")]
-        public async Task<ActionResult> Delete(int NumExamen)
+        public async Task<ActionResult> Delete(int NumExamenVista)
         {
             var funcion = new DExamenVista();
             var parametros = new MExamenVista();
-            parametros.NumExamen = NumExamen;
+            parametros.NumExamen = NumExamenVista;
             await funcion.EliminarExamenVista(parametros);
             return NoContent();
 

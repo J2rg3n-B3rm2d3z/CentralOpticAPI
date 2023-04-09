@@ -40,8 +40,7 @@ namespace CentralOpticAPI.Datos
                 using (var cmd = new SqlCommand("insertarCorreoProveedor", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@IdCorreoProveedor", parametros.IdCorreoProveedor);
-                    cmd.Parameters.AddWithValue("@Numempleado", parametros.IdProveedor);
+                    cmd.Parameters.AddWithValue("@IdProveedor", parametros.IdProveedor);
                     cmd.Parameters.AddWithValue("@Correo", parametros.Correo);
 
                     await sql.OpenAsync();
@@ -60,8 +59,8 @@ namespace CentralOpticAPI.Datos
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@IdCorreoProveedor", parametros.IdCorreoProveedor);
-                    cmd.Parameters.AddWithValue("@Propietario", parametros.IdProveedor);
-                    cmd.Parameters.AddWithValue("@Direccion", parametros.Correo);
+                    cmd.Parameters.AddWithValue("@IdProveedor", parametros.IdProveedor);
+                    cmd.Parameters.AddWithValue("@Correo", parametros.Correo);
 
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
