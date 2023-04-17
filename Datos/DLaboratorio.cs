@@ -14,7 +14,7 @@ namespace CentralOpticAPI.Datos
             var lista = new List<MLaboratorio>();
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("mostrarLaboratorios", sql))
+                using (var cmd = new SqlCommand("SP_mostrarLaboratorios", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -43,7 +43,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("insertarLaboratorio", sql))
+                using (var cmd = new SqlCommand("SP_insertarLaboratorio", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Nombre", parametros.Nombre);
@@ -62,7 +62,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("editarLaboratorio", sql))
+                using (var cmd = new SqlCommand("SP_editarLaboratorio", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -83,7 +83,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("eliminarLaboratorio", sql))
+                using (var cmd = new SqlCommand("SP_eliminarLaboratorio", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

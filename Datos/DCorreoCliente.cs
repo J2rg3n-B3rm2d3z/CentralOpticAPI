@@ -14,7 +14,7 @@ namespace CentralOpticAPI.Datos
             var lista = new List<MCorreoCliente>();
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("mostrarCorreoCliente", sql))
+                using (var cmd = new SqlCommand("SP_mostrarCorreoCliente", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -38,7 +38,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("insertarCorreoCliente", sql))
+                using (var cmd = new SqlCommand("SP_insertarCorreoCliente", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@CodCliente", parametros.CodCliente);
@@ -54,7 +54,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("editarCorreoCliente", sql))
+                using (var cmd = new SqlCommand("SP_editarCorreoCliente", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -72,7 +72,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("eliminarCorreoCliente", sql))
+                using (var cmd = new SqlCommand("SP_eliminarCorreoCliente", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

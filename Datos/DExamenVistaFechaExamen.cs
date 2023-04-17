@@ -13,7 +13,7 @@ namespace CentralOpticAPI.Datos
             var lista = new List<MExamenVistaFechaExamen>();
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("mostrarFechaExamen", sql))
+                using (var cmd = new SqlCommand("SP_mostrarFechaExamen", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -36,7 +36,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("insertarFechaExamen", sql))
+                using (var cmd = new SqlCommand("SP_insertarFechaExamen", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@FechaExamen", parametros.FechaExamen);
@@ -52,7 +52,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("editarFechaExamen", sql))
+                using (var cmd = new SqlCommand("SP_editarFechaExamen", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -70,7 +70,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("eliminarFechaExamen", sql))
+                using (var cmd = new SqlCommand("SP_eliminarFechaExamen", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

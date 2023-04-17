@@ -13,7 +13,7 @@ namespace CentralOpticAPI.Datos
             var lista = new List<MFechaFactura>();
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("mostrarFechaFacturas", sql))
+                using (var cmd = new SqlCommand("SP_mostrarFechaFacturas", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -36,7 +36,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("insertarFechaFactura", sql))
+                using (var cmd = new SqlCommand("SP_insertarFechaFactura", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@FechaEmision", parametros.FechaEmision);
@@ -52,7 +52,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("editarFechaFactura", sql))
+                using (var cmd = new SqlCommand("SP_editarFechaFactura", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -70,7 +70,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("eliminarFechaFactura", sql))
+                using (var cmd = new SqlCommand("SP_eliminarFechaFactura", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

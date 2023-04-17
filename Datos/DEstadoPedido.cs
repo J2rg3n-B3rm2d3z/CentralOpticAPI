@@ -13,7 +13,7 @@ namespace CentralOpticAPI.Datos
             var lista = new List<MEstadoPedido>();
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("mostrarEstadoPedidos", sql))
+                using (var cmd = new SqlCommand("SP_mostrarEstadoPedidos", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;

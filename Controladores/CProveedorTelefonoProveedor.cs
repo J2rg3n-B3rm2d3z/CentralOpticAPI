@@ -8,10 +8,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/telefonoproveedor")]
-    [Authorize(Roles = ("Administrador"))]
     public class CProveedorTelefonoProveedor : Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MProveedorTelefonoProveedor>>> Get()
         {
             var funcion = new DProveedorTelefonoProveedor();
@@ -20,6 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MProveedorTelefonoProveedor parametros)
         {
             var funcion = new DProveedorTelefonoProveedor();
@@ -27,6 +28,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{IdTelefonoProveedor}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int IdTelefonoProveedor, [FromBody] MProveedorTelefonoProveedor parametros)
         {
             var funcion = new DProveedorTelefonoProveedor();
@@ -36,6 +38,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{IdTelefonoProveedor}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int IdTelefonoProveedor)
         {
             var funcion = new DProveedorTelefonoProveedor();

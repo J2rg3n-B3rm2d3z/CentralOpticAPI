@@ -8,10 +8,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/fechapedido")]
-    [Authorize(Roles = ("Administrador"))]
     public class CFechaPedido : Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MFechaPedido>>> Get()
         {
             var funcion = new DFechaPedido();
@@ -20,6 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MFechaPedido parametros)
         {
             var funcion = new DFechaPedido();
@@ -27,6 +28,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{IdFechaPedido}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int IdFechaPedido, [FromBody] MFechaPedido parametros)
         {
             var funcion = new DFechaPedido();
@@ -36,6 +38,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{IdFechaPedido}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int IdFechaPedido)
         {
             var funcion = new DFechaPedido();

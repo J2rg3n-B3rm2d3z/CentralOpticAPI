@@ -13,7 +13,7 @@ namespace CentralOpticAPI.Datos
             var lista = new List<MUsuario>();
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("mostrarUsuarios", sql))
+                using (var cmd = new SqlCommand("SP_mostrarUsuarios", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -22,6 +22,7 @@ namespace CentralOpticAPI.Datos
                         while (await item.ReadAsync())
                         {
                             var musuario = new MUsuario();
+                            musuario.IdUsuario = (int)item["IdUsuario"];
                             musuario.NombreUsuario = (string)item["NombreUsuario"];
                             musuario.Clave = (string)item["Clave"];
                             musuario.Correo = (string)item["Correo"];
@@ -40,25 +41,67 @@ namespace CentralOpticAPI.Datos
             return lista;
         }
 
-        //public async Task InsertarUsuario(MUsuario parametros)
-        //{
-        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
-        //    {
-        //        using (var cmd = new SqlCommand("insertarUsuario", sql))
-        //        {
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //            cmd.Parameters.AddWithValue("@NombreUsuario", parametros.NombreUsuario);
-        //            cmd.Parameters.AddWithValue("@Clave", parametros.Clave);
-        //            cmd.Parameters.AddWithValue("@Correo", parametros.Correo);
-        //            cmd.Parameters.AddWithValue("@Rol", parametros.Rol);
-        //            cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
-        //            cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
+        public async Task InsertarUsuario(MUsuario parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_insertarUsuario", sql))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@NombreUsuario", parametros.NombreUsuario);
+                    cmd.Parameters.AddWithValue("@Clave", parametros.Clave);
+                    cmd.Parameters.AddWithValue("@Correo", parametros.Correo);
+                    cmd.Parameters.AddWithValue("@Rol", parametros.Rol);
+                    cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
+                    cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
 
-        //            await sql.OpenAsync();
-        //            await cmd.ExecuteNonQueryAsync();
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
 
-        //        }
-        //    }
-        //}
+                }
+            }
+        }
+        public async Task EditarUsuario(MUsuario parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_editarUsuario", sql))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+
+                    cmd.Parameters.AddWithValue("@IdUsuario", parametros.IdUsuario);
+                    cmd.Parameters.AddWithValue("@NombreUsuario", parametros.NombreUsuario);
+                    cmd.Parameters.AddWithValue("@Clave", parametros.Clave);
+                    cmd.Parameters.AddWithValue("@Correo", parametros.Correo);
+                    cmd.Parameters.AddWithValue("@Rol", parametros.Rol);
+                    cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
+                    cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
+
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+
+                }
+            }
+        }
+
+        public async Task EliminarUsuario(MUsuario parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_eliminarUsuario", sql))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@IdUsuario", parametros.IdUsuario);
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+
+                }
+            }
+        }
+
     }
 }

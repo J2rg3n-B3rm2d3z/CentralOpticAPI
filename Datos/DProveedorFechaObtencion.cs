@@ -13,7 +13,7 @@ namespace CentralOpticAPI.Datos
             var lista = new List<MProveedorFechaObtencion>();
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("mostrarFechaObtencion", sql))
+                using (var cmd = new SqlCommand("SP_mostrarFechaObtencion", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -36,7 +36,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("insertarFechaObtencion", sql))
+                using (var cmd = new SqlCommand("SP_insertarFechaObtencion", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@FechaObtencion", parametros.FechaObtencion);
@@ -52,7 +52,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("editarFechaObtencion", sql))
+                using (var cmd = new SqlCommand("SP_editarFechaObtencion", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -70,7 +70,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("eliminarFechaObtencion", sql))
+                using (var cmd = new SqlCommand("SP_eliminarFechaObtencion", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

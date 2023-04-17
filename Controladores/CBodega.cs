@@ -7,10 +7,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/bodega")]
-    [Authorize(Roles = ("Administrador"))]
     public class CBodega : Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MBodega>>> Get()
         {
             var funcion = new DBodega();
@@ -19,6 +19,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MBodega parametros)
         {
             var funcion = new DBodega();
@@ -26,6 +27,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{IdBodega}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int IdBodega, [FromBody] MBodega parametros)
         {
             var funcion = new DBodega();
@@ -35,6 +37,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{IdBodega}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int IdBodega)
         {
             var funcion = new DBodega();

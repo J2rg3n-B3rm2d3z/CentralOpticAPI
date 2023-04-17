@@ -13,7 +13,7 @@ namespace CentralOpticAPI.Datos
             var lista = new List<MProveedorTelefonoProveedor>();
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("mostrarTelefonoProveedor", sql))
+                using (var cmd = new SqlCommand("SP_mostrarTelefonoProveedor", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -37,7 +37,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("insertarTelefonoProveedor", sql))
+                using (var cmd = new SqlCommand("SP_insertarTelefonoProveedor", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@IdProveedor", parametros.IdProveedor);
@@ -54,7 +54,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("editarTelefonoProveedor", sql))
+                using (var cmd = new SqlCommand("SP_editarTelefonoProveedor", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -73,7 +73,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("eliminarTelefonoProveedor", sql))
+                using (var cmd = new SqlCommand("SP_eliminarTelefonoProveedor", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

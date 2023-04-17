@@ -8,7 +8,7 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/estadopedido")]
-    [Authorize(Roles = ("Administrador"))]
+    [Authorize(Roles = ("Administrador, Empleado"))]
     public class CEstadoPedido:Controller
     {
         [HttpGet]

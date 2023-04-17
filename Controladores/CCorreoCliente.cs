@@ -8,10 +8,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/correocliente")]
-    [Authorize(Roles = ("Administrador"))]
     public class CCorreoCliente : Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MCorreoCliente>>> Get()
         {
             var funcion = new DCorreoCliente();
@@ -20,6 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MCorreoCliente parametros)
         {
             var funcion = new DCorreoCliente();
@@ -27,6 +28,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{IdCorreoCliente}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int IdCorreoCliente, [FromBody] MCorreoCliente parametros)
         {
             var funcion = new DCorreoCliente();
@@ -36,6 +38,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{IdCorreoCliente}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int IdCorreoCliente)
         {
             var funcion = new DCorreoCliente();

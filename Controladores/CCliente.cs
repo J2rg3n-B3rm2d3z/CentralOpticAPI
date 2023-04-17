@@ -8,10 +8,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/cliente")]
-    [Authorize(Roles = ("Administrador"))]
     public class CCliente : Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MCliente>>> Get()
         {
             var funcion = new DCliente();
@@ -20,6 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MCliente parametros)
         {
             var funcion = new DCliente();
@@ -27,6 +28,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{CodCliente}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int CodCliente, [FromBody] MCliente parametros)
         {
             var funcion = new DCliente();
@@ -36,6 +38,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{CodCliente}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int CodCliente)
         {
             var funcion = new DCliente();

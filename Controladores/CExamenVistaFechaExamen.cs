@@ -8,10 +8,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/fechaexamen")]
-    [Authorize(Roles = ("Administrador"))]
     public class CExamenVistaFechaExamen : Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MExamenVistaFechaExamen>>> Get()
         {
             var funcion = new DExamenVistaFechaExamen();
@@ -20,6 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MExamenVistaFechaExamen parametros)
         {
             var funcion = new DExamenVistaFechaExamen();
@@ -27,6 +28,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{IdFechaExamen}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int IdFechaExamen, [FromBody] MExamenVistaFechaExamen parametros)
         {
             var funcion = new DExamenVistaFechaExamen();
@@ -36,6 +38,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{IdFechaExamen}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int IdFechaExamen)
         {
             var funcion = new DExamenVistaFechaExamen();

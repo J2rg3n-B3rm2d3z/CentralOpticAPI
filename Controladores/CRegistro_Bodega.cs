@@ -8,10 +8,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/registrobodega")]
-    [Authorize(Roles = ("Administrador"))]
     public class CRegistro_Bodega : Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MRegistro_Bodega>>> Get()
         {
             var funcion = new DRegistro_Bodega();
@@ -20,6 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MRegistro_Bodega parametros)
         {
             var funcion = new DRegistro_Bodega();
@@ -27,6 +28,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{IdRegistro_Bodega}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int IdRegistro_Bodega, [FromBody] MRegistro_Bodega parametros)
         {
             var funcion = new DRegistro_Bodega();
@@ -36,6 +38,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{IdRegistro_Bodega}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int IdRegistro_Bodega)
         {
             var funcion = new DRegistro_Bodega();

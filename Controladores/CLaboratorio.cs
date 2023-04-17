@@ -8,10 +8,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/laboratorio")]
-    [Authorize(Roles = ("Administrador"))]
     public class CLaboratorio:Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MLaboratorio>>> Get()
         {
             var funcion = new DLaboratorio();
@@ -20,6 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MLaboratorio parametros)
         {
             var funcion = new DLaboratorio();
@@ -27,6 +28,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{IdLaboratorio}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int IdLaboratorio, [FromBody] MLaboratorio parametros)
         {
             var funcion = new DLaboratorio();
@@ -36,6 +38,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{IdLaboratorio}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int IdLaboratorio)
         {
             var funcion = new DLaboratorio();

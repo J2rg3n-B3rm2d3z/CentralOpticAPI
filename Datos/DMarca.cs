@@ -13,7 +13,7 @@ namespace CentralOpticAPI.Datos
             var lista = new List<MMarca>();
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("mostrarMarcas", sql))
+                using (var cmd = new SqlCommand("SP_mostrarMarcas", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -36,7 +36,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("insertarMarca", sql))
+                using (var cmd = new SqlCommand("SP_insertarMarca", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Marca", parametros.Marca);
@@ -52,7 +52,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("editarMarca", sql))
+                using (var cmd = new SqlCommand("SP_editarMarca", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -70,7 +70,7 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("eliminarMarca", sql))
+                using (var cmd = new SqlCommand("SP_eliminarMarca", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

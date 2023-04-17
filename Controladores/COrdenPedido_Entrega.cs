@@ -8,10 +8,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/ordenpedidoentrega")]
-    [Authorize(Roles = ("Administrador"))]
     public class COrdenPedido_Entrega : Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MOrdenPedido_Entrega>>> Get()
         {
             var funcion = new DOrdenPedido_Entrega();
@@ -20,6 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MOrdenPedido_Entrega parametros)
         {
             var funcion = new DOrdenPedido_Entrega();
@@ -27,6 +28,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{IdOrdenPedido_Entrega}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int IdOrdenPedido_Entrega, [FromBody] MOrdenPedido_Entrega parametros)
         {
             var funcion = new DOrdenPedido_Entrega();
@@ -36,6 +38,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{IdOrdenPedido_Entrega}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int IdOrdenPedido_Entrega)
         {
             var funcion = new DOrdenPedido_Entrega();

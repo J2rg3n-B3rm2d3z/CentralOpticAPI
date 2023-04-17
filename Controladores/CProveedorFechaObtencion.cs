@@ -8,10 +8,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/fechaobtencion")]
-    [Authorize(Roles = ("Administrador"))]
     public class CProveedorFechaObtencion : Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MProveedorFechaObtencion>>> Get()
         {
             var funcion = new DProveedorFechaObtencion();
@@ -20,6 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MProveedorFechaObtencion parametros)
         {
             var funcion = new DProveedorFechaObtencion();
@@ -27,6 +28,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{IdFechaObtencion}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int IdFechaObtencion, [FromBody] MProveedorFechaObtencion parametros)
         {
             var funcion = new DProveedorFechaObtencion();
@@ -36,6 +38,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{IdFechaObtencion}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int IdFechaObtencion)
         {
             var funcion = new DProveedorFechaObtencion();

@@ -8,7 +8,7 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/estadofactura")]
-    [Authorize(Roles = ("Administrador"))]
+    [Authorize(Roles = ("Administrador, Empleado"))]
     public class CEstadoFactura : Controller
     {
         [HttpGet]

@@ -8,10 +8,10 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/factura")]
-    [Authorize(Roles = ("Administrador"))]
     public class CFactura :Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult<List<MFactura>>> Get()
         {
             var funcion = new DFactura();
@@ -20,6 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task Post([FromBody] MFactura parametros)
         {
             var funcion = new DFactura();
@@ -27,6 +28,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{NumFactura}")]
+        [Authorize(Roles = ("Administrador, Empleado"))]
         public async Task<ActionResult> Put(int NumFactura, [FromBody] MFactura parametros)
         {
             var funcion = new DFactura();
@@ -36,6 +38,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpDelete("{NumFactura}")]
+        [Authorize(Roles = ("Administrador"))]
         public async Task<ActionResult> Delete(int NumFactura)
         {
             var funcion = new DFactura();
