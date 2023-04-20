@@ -23,6 +23,7 @@ namespace CentralOpticAPI.Datos
                         {
                             var mcliente = new MCliente();
                             mcliente.CodCliente = (int)item["CodCliente"];
+                            mcliente.Cedula = (string)item["Cedula"];
                             mcliente.Nombres = (string)item["Nombres"];
                             mcliente.Apellidos = (string)item["Apellidos"];
                             if (!item.IsDBNull(item.GetOrdinal("Direccion")))
@@ -42,6 +43,8 @@ namespace CentralOpticAPI.Datos
                 using (var cmd = new SqlCommand("SP_insertarCliente", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@Cedula", parametros.Cedula);
                     cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
                     cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
                     cmd.Parameters.AddWithValue("@Direccion", SqlDbType.NVarChar).Value = (object)parametros.Direccion ?? DBNull.Value;
@@ -62,6 +65,7 @@ namespace CentralOpticAPI.Datos
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@CodCliente", parametros.CodCliente);
+                    cmd.Parameters.AddWithValue("@Cedula", parametros.Cedula);
                     cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
                     cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
                     cmd.Parameters.AddWithValue("@Direccion", SqlDbType.NVarChar).Value = (object)parametros.Direccion ?? DBNull.Value;
