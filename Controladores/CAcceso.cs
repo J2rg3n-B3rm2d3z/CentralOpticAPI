@@ -8,11 +8,19 @@ using System.Text;
 
 namespace CentralOpticAPI.Controladores
 {
+    class Token
+    {
+        public string token { get; set; }
+    }
+
     [ApiController]
     [Route("centralopticapi/acceso")]
+
     public class CAcceso : Controller
     {
         private readonly IConfiguration _config;
+
+
         public CAcceso(IConfiguration config)
         {
             _config = config;
@@ -39,9 +47,14 @@ namespace CentralOpticAPI.Controladores
             {
                 //Crear el token
 
-                var token = Generar(usuario);
+              
 
-                return Ok(token);
+                var TK = new Token();
+
+                TK.token = Generar(usuario);
+
+
+                return Ok(TK);
             }
 
             return NotFound("No existe usuario encontrado");
