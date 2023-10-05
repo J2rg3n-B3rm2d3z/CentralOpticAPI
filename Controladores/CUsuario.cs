@@ -8,7 +8,7 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/usuario")]
-    [Authorize(Roles = ("Administrador"))]
+    [Authorize(Roles = ("Super Administrador"))]
     public class CUsuario : Controller
     {
         [HttpGet]

@@ -22,10 +22,10 @@ namespace CentralOpticAPI.Datos
                         while (await item.ReadAsync())
                         {
                             var musuario = new MUsuario();
-                            musuario.IdUsuario = (int)item["IdUsuario"];
-                            musuario.NombreUsuario = (string)item["NombreUsuario"];
+                            musuario.IdUsuario = (int)item["Numero_Usuario"];
+                            musuario.NombreUsuario = (string)item["Nombre_Usuario"];
                             musuario.Clave = (string)item["Clave"];
-                            musuario.Correo = (string)item["Correo"];
+                            musuario.Correo = (string)item["Correos"];
                             musuario.Rol = (string)item["Rol"];
                             musuario.Nombres = (string)item["Nombres"];
                             musuario.Apellidos = (string)item["Apellidos"];
