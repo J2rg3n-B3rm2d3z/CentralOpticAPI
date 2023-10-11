@@ -43,11 +43,15 @@ namespace CentralOpticAPI.Controladores
 
             var usuario = Autenticacion(mAcceso,lista);
 
+           
             if (usuario != null)
             {
                 //Crear el token
 
-              
+                if (usuario.Estado == false)
+                {
+                    return NotFound("El usuario no esta activo");
+                }
 
                 var TK = new Token();
 
@@ -123,6 +127,7 @@ namespace CentralOpticAPI.Controladores
                     Nombres = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.GivenName)?.Value,
                     Apellidos = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.Surname)?.Value,
                     Rol = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value,
+                    Estado = true
                 };
             }
             return null;

@@ -16,6 +16,10 @@ namespace CentralOpticAPI.Controladores
         {
             var funcion = new DUsuario();
             var lista = await funcion.MostrarUsuarios();
+            foreach (var item in lista)
+            {
+                item.Clave = null;
+            }
             return lista;
         }
 

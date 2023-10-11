@@ -29,6 +29,7 @@ namespace CentralOpticAPI.Datos
                             musuario.Rol = (string)item["Rol"];
                             musuario.Nombres = (string)item["Nombres"];
                             musuario.Apellidos = (string)item["Apellidos"];
+                            musuario.Estado = (bool)item["Estado"];
 
                             //byte[] clave = Convert.FromBase64String(musuario.Clave);
                             //musuario.Clave = System.Text.Encoding.UTF8.GetString(clave);
