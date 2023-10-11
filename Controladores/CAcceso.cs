@@ -97,7 +97,8 @@ namespace CentralOpticAPI.Controladores
                 new Claim(ClaimTypes.Email, usuario.Correo),
                 new Claim(ClaimTypes.GivenName, usuario.Nombres),
                 new Claim(ClaimTypes.Surname, usuario.Apellidos),
-                new Claim(ClaimTypes.Role, usuario.Rol)
+                new Claim(ClaimTypes.Role, usuario.Rol),
+                new Claim("Numero_usuario", usuario.IdUsuario.ToString())
             };
 
             //Crear el token
@@ -127,6 +128,7 @@ namespace CentralOpticAPI.Controladores
                     Nombres = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.GivenName)?.Value,
                     Apellidos = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.Surname)?.Value,
                     Rol = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value,
+                    IdUsuario = int.Parse(usuarioClaims.FirstOrDefault(o => o.Type == "Numero_usuario")?.Value),
                     Estado = true
                 };
             }

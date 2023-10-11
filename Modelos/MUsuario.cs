@@ -11,4 +11,14 @@
         public string Apellidos { get; set; }
         public bool Estado { get; set; }
     }
+
+    public class MUsuarioIngreso
+    {
+        public int IdUsuario { get; set; }
+        public string NombreUsuario { get; set; }
+        public int NumeroEmpleado { get; set; }
+        public string? Clave { get; set; }
+        public string Rol { get; set; }
+        public bool Estado { get; set; }
+    }
 }
