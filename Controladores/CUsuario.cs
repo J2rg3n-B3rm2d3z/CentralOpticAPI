@@ -8,10 +8,11 @@ namespace CentralOpticAPI.Controladores
 {
     [ApiController]
     [Route("centralopticapi/usuario")]
-    [Authorize(Roles = ("Super Administrador"))]
+    
     public class CUsuario : Controller
     {
         [HttpGet]
+        [Authorize(Roles = ("Super Administrador"))]
         public async Task<ActionResult<List<MUsuario>>> Get()
         {
             var funcion = new DUsuario();
@@ -24,6 +25,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpGet("{IdUsuario}")]
+        [Authorize(Roles = ("Super Administrador"))]
         public async Task<ActionResult<List<MUsuario>>> Get(int IdUsuario)
         {
             var funcion = new DUsuario();
@@ -37,17 +39,16 @@ namespace CentralOpticAPI.Controladores
             return lista;
         }
 
-        //[HttpPost]
-        //public async Task Post([FromBody] MUsuario parametros)
-        //{
-        //    var funcion = new DUsuario();
-        //    byte[] claveEncriptada = System.Text.Encoding.UTF8.GetBytes(parametros.Clave);
-        //    parametros.Clave = Convert.ToBase64String(claveEncriptada);
-
-        //    await funcion.InsertarUsuario(parametros);
-        //}
+        [HttpPost]
+        [Authorize(Roles = ("Super Administrador"))]
+        public async Task Post([FromBody] MUsuarioIngreso parametros)
+        {
+            var funcion = new DUsuario();
+            await funcion.InsertarUsuario(parametros);
+        }
 
         [HttpPut("{IdUsuario}")]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
         public async Task<ActionResult> Put(int IdUsuario, [FromBody] MUsuarioIngreso parametros)
         {
             var funcion = new DUsuario();
@@ -59,17 +60,6 @@ namespace CentralOpticAPI.Controladores
             }
             return NoContent();
         }
-
-        //[HttpPut("{IdUsuario}/{Clave}")]
-        //public async Task<ActionResult> Put(int IdUsuario, string Clave)
-        //{
-        //    var funcion = new DUsuario();
-        //    parametros.IdUsuario = IdUsuario;
-        //    byte[] claveEncriptada = System.Text.Encoding.UTF8.GetBytes(parametros.Clave);
-        //    parametros.Clave = Convert.ToBase64String(claveEncriptada);
-        //    await funcion.EditarUsuario(parametros);
-        //    return NoContent();
-        //}
 
         //[HttpDelete("{IdUsuario}")]
         //public async Task<ActionResult> Delete(int IdUsuario)

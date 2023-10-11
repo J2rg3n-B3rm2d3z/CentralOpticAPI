@@ -20,7 +20,6 @@ namespace CentralOpticAPI.Controladores
     {
         private readonly IConfiguration _config;
 
-
         public CAcceso(IConfiguration config)
         {
             _config = config;
@@ -57,11 +56,10 @@ namespace CentralOpticAPI.Controladores
 
                 TK.token = Generar(usuario);
 
-
                 return Ok(TK);
             }
 
-            return NotFound("No existe usuario encontrado");
+            return NotFound("No existe usuario indicado");
         }
 
         private MUsuario Autenticacion(MAcceso mAcceso, List<MUsuario> lista)
@@ -72,9 +70,6 @@ namespace CentralOpticAPI.Controladores
 
             var currentUser = lista.FirstOrDefault(usuario => usuario.NombreUsuario == mAcceso.NombreUsuario
             && usuario.Clave == mAcceso.Clave);
-
-            //var currentUser = ConstanteUsuario.usuarios.FirstOrDefault(usuario => usuario.NombreUsuario == mAcceso.NombreUsuario
-            //&& usuario.Clave == mAcceso.Clave);
 
             if (currentUser != null)
             {
@@ -128,7 +123,7 @@ namespace CentralOpticAPI.Controladores
                     Nombres = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.GivenName)?.Value,
                     Apellidos = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.Surname)?.Value,
                     Rol = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value,
-                    IdUsuario = int.Parse(usuarioClaims.FirstOrDefault(o => o.Type == "Numero_usuario")?.Value),
+                    IdUsuario = int.Parse(usuarioClaims.FirstOrDefault(o => o.Type == "Numero_usuario")?.Value ?? "0"),
                     Estado = true
                 };
             }

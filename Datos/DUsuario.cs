@@ -78,26 +78,28 @@ namespace CentralOpticAPI.Datos
             return lista;
         }
 
-        //public async Task InsertarUsuario(MUsuario parametros)
-        //{
-        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
-        //    {
-        //        using (var cmd = new SqlCommand("SP_insertarUsuario", sql))
-        //        {
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //            cmd.Parameters.AddWithValue("@NombreUsuario", parametros.NombreUsuario);
-        //            cmd.Parameters.AddWithValue("@Clave", parametros.Clave);
-        //            cmd.Parameters.AddWithValue("@Correo", parametros.Correo);
-        //            cmd.Parameters.AddWithValue("@Rol", parametros.Rol);
-        //            cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
-        //            cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
+        public async Task InsertarUsuario(MUsuarioIngreso parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                byte[] claveEncriptada = System.Text.Encoding.UTF8.GetBytes(parametros.Clave);
+                parametros.Clave = Convert.ToBase64String(claveEncriptada);
 
-        //            await sql.OpenAsync();
-        //            await cmd.ExecuteNonQueryAsync();
+                using (var cmd = new SqlCommand("SP_insertarUsuario", sql))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Nombre_Usuario", parametros.NombreUsuario);
+                    cmd.Parameters.AddWithValue("@Clave", parametros.Clave);
+                    cmd.Parameters.AddWithValue("@Rol", parametros.Rol);
+                    cmd.Parameters.AddWithValue("@Numero_Empleado", parametros.NumeroEmpleado);
+                    cmd.Parameters.AddWithValue("@Estado", parametros.Estado);
 
-        //        }
-        //    }
-        //}
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+
+                }
+            }
+        }
         public async Task EditarUsuario(MUsuarioIngreso parametros)
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
