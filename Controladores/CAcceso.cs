@@ -12,6 +12,7 @@ namespace CentralOpticAPI.Controladores
     {
         public string token { get; set; }
         public string role { get; set; }
+        public int id { get; set; }
     }
 
     [ApiController]
@@ -57,7 +58,7 @@ namespace CentralOpticAPI.Controladores
 
                 TK.token = Generar(usuario);
                 TK.role = usuario.Rol;
-
+                TK.id = usuario.IdUsuario;
                 return Ok(TK);
             }
 
