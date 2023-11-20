@@ -12,7 +12,7 @@ namespace CentralOpticAPI.Controladores
     public class CProveedor : Controller
     {
         [HttpGet]
-        [Authorize(Roles = ("Administrador, Empleado"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
         public async Task<ActionResult<List<MProveedor>>> Get()
         {
             var funcion = new DProveedor();
@@ -20,34 +20,45 @@ namespace CentralOpticAPI.Controladores
             return lista;
         }
 
-        [HttpPost]
-        [Authorize(Roles = ("Administrador, Empleado"))]
-        public async Task Post([FromBody] MProveedor parametros)
+        [HttpGet("{CodigoProveedor}")]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        public async Task<ActionResult<List<MProveedor>>> Get(int CodigoProveedor)
         {
             var funcion = new DProveedor();
-            await funcion.InsertarProveedor(parametros);
+            MProveedor proveedor = new MProveedor();
+            proveedor.CodigoProveedor = CodigoProveedor;
+            var lista = await funcion.MostrarProveedorById(proveedor);
+            return lista;
         }
 
-        [HttpPut("{IdProveedor}")]
-        [Authorize(Roles = ("Administrador, Empleado"))]
-        public async Task<ActionResult> Put(int IdProveedor, [FromBody] MProveedor parametros)
-        {
-            var funcion = new DProveedor();
-            parametros.IdProveedor = IdProveedor;
-            await funcion.EditarProveedor(parametros);
-            return NoContent();
-        }
+        //[HttpPost]
+        //[Authorize(Roles = ("Administrador, Empleado"))]
+        //public async Task Post([FromBody] MProveedor parametros)
+        //{
+        //    var funcion = new DProveedor();
+        //    await funcion.InsertarProveedor(parametros);
+        //}
 
-        [HttpDelete("{IdProveedor}")]
-        [Authorize(Roles = ("Administrador"))]
-        public async Task<ActionResult> Delete(int IdProveedor)
-        {
-            var funcion = new DProveedor();
-            var parametros = new MProveedor();
-            parametros.IdProveedor = IdProveedor;
-            await funcion.EliminarProveedor(parametros);
-            return NoContent();
+        //[HttpPut("{IdProveedor}")]
+        //[Authorize(Roles = ("Administrador, Empleado"))]
+        //public async Task<ActionResult> Put(int IdProveedor, [FromBody] MProveedor parametros)
+        //{
+        //    var funcion = new DProveedor();
+        //    parametros.IdProveedor = IdProveedor;
+        //    await funcion.EditarProveedor(parametros);
+        //    return NoContent();
+        //}
 
-        }
+        //[HttpDelete("{IdProveedor}")]
+        //[Authorize(Roles = ("Administrador"))]
+        //public async Task<ActionResult> Delete(int IdProveedor)
+        //{
+        //    var funcion = new DProveedor();
+        //    var parametros = new MProveedor();
+        //    parametros.IdProveedor = IdProveedor;
+        //    await funcion.EliminarProveedor(parametros);
+        //    return NoContent();
+
+        //}
     }
 }

@@ -22,12 +22,47 @@ namespace CentralOpticAPI.Datos
                         while (await item.ReadAsync())
                         {
                             var mproducto = new MProducto();
-                            mproducto.CodProducto = (int)item["CodProducto"];
-                            mproducto.IdMarca = (int)item["IdMarca"];
-                            mproducto.IdNombreProducto = (int)item["IdNombreProducto"];
+                            mproducto.CodProducto = (string)item["Codigo_Producto"];
                             mproducto.Descripcion = (string)item["Descripcion"];
-                            mproducto.PrecioActual = (decimal)item["PrecioActual"];
-                            mproducto.EstadoProducto = (bool)item["EstadoProducto"];
+                            mproducto.TipoProducto = (string)item["Tipo_Producto"];
+                            mproducto.Estado = (bool)item["Estado"];
+                            mproducto.PrecioVenta = (decimal)item["Precio_Venta"];
+                            mproducto.PrecioCompra = (decimal)item["Precio_Compra"];
+                            mproducto.Cantidad = (int)item["Cantidad"];
+                            mproducto.StockMinimo = (int)item["Stock_Minimo"];
+                            mproducto.StockMaximo = (int)item["Stock_Maximo"];
+                            lista.Add(mproducto);
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+
+        public async Task<List<MProducto>> MostrarProductosbyId(MProducto parametros)
+        {
+            var lista = new List<MProducto>();
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_mostrarProductobyId", sql))
+                {
+                    await sql.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Codigo_Producto", parametros.CodProducto);
+                    using (var item = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await item.ReadAsync())
+                        {
+                            var mproducto = new MProducto();
+                            mproducto.CodProducto = (string)item["Codigo_Producto"];
+                            mproducto.Descripcion = (string)item["Descripcion"];
+                            mproducto.TipoProducto = (string)item["Tipo_Producto"];
+                            mproducto.Estado = (bool)item["Estado"];
+                            mproducto.PrecioVenta = (decimal)item["Precio_Venta"];
+                            mproducto.PrecioCompra = (decimal)item["Precio_Compra"];
+                            mproducto.Cantidad = (int)item["Cantidad"];
+                            mproducto.StockMinimo = (int)item["Stock_Minimo"];
+                            mproducto.StockMaximo = (int)item["Stock_Maximo"];
                             lista.Add(mproducto);
                         }
                     }
@@ -40,14 +75,15 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("SP_insertarProducto", sql))
+                using (var cmd = new SqlCommand("SP_InsetarProducto", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@IdMarca", parametros.IdMarca);
-                    cmd.Parameters.AddWithValue("@IdNombreProducto", parametros.IdNombreProducto);
+                    cmd.Parameters.AddWithValue("@Tipo_Producto", parametros.TipoProducto);
                     cmd.Parameters.AddWithValue("@Descripcion", parametros.Descripcion);
-                    cmd.Parameters.AddWithValue("@PrecioActual", parametros.PrecioActual);
-                    cmd.Parameters.AddWithValue("@EstadoProducto", parametros.EstadoProducto);
+                    cmd.Parameters.AddWithValue("@Precio_Venta", parametros.PrecioVenta);
+                    cmd.Parameters.AddWithValue("@Precio_Compra", parametros.PrecioCompra);
+                    cmd.Parameters.AddWithValue("@Stock_Minimo", parametros.StockMinimo);
+                    cmd.Parameters.AddWithValue("@Stock_Maximo", parametros.StockMaximo);
 
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
@@ -60,16 +96,18 @@ namespace CentralOpticAPI.Datos
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("SP_editarProducto", sql))
+                using (var cmd = new SqlCommand("SP_EditarProducto", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@CodProducto", parametros.CodProducto);
-                    cmd.Parameters.AddWithValue("@IdMarca", parametros.IdMarca);
-                    cmd.Parameters.AddWithValue("@IdNombreProducto", parametros.IdNombreProducto);
+                    cmd.Parameters.AddWithValue("@Codigo_Producto", parametros.CodProducto);
+                    cmd.Parameters.AddWithValue("@Tipo_Producto", parametros.TipoProducto);
                     cmd.Parameters.AddWithValue("@Descripcion", parametros.Descripcion);
-                    cmd.Parameters.AddWithValue("@PrecioActual", parametros.PrecioActual);
-                    cmd.Parameters.AddWithValue("@EstadoProducto", parametros.EstadoProducto);
+                    cmd.Parameters.AddWithValue("@Estado", parametros.Estado);
+                    cmd.Parameters.AddWithValue("@Precio_Venta", parametros.PrecioVenta);
+                    cmd.Parameters.AddWithValue("@Precio_Compra", parametros.PrecioCompra);
+                    cmd.Parameters.AddWithValue("@Stock_Minimo", parametros.StockMinimo);
+                    cmd.Parameters.AddWithValue("@Stock_Maximo", parametros.StockMaximo);
 
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
@@ -78,20 +116,20 @@ namespace CentralOpticAPI.Datos
             }
         }
 
-        public async Task EliminarProducto(MProducto parametros)
-        {
-            using (var sql = new SqlConnection(cn.cadenaSQL()))
-            {
-                using (var cmd = new SqlCommand("SP_eliminarProducto", sql))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
+        //public async Task EliminarProducto(MProducto parametros)
+        //{
+        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
+        //    {
+        //        using (var cmd = new SqlCommand("SP_eliminarProducto", sql))
+        //        {
+        //            cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@CodProducto", parametros.CodProducto);
-                    await sql.OpenAsync();
-                    await cmd.ExecuteNonQueryAsync();
+        //            cmd.Parameters.AddWithValue("@CodProducto", parametros.CodProducto);
+        //            await sql.OpenAsync();
+        //            await cmd.ExecuteNonQueryAsync();
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
     }
 }

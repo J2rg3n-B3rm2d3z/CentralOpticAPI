@@ -26,7 +26,8 @@ namespace CentralOpticAPI.Datos
                             musuario.IdUsuario = (int)item["Numero_Usuario"];
                             musuario.NombreUsuario = (string)item["Nombre_Usuario"];
                             musuario.Clave = (string)item["Clave"];
-                            musuario.Correo = (string)item["Correos"];
+                            if (!item.IsDBNull(item.GetOrdinal("Correos")))
+                                musuario.Correo = (string)item["Correos"];
                             musuario.Rol = (string)item["Rol"];
                             musuario.Nombres = (string)item["Nombres"];
                             musuario.Apellidos = (string)item["Apellidos"];
@@ -61,7 +62,8 @@ namespace CentralOpticAPI.Datos
                             musuario.IdUsuario = (int)item["Numero_Usuario"];
                             musuario.NombreUsuario = (string)item["Nombre_Usuario"];
                             musuario.Clave = (string)item["Clave"];
-                            musuario.Correo = (string)item["Correos"];
+                            if (!item.IsDBNull(item.GetOrdinal("Correos")))
+                                musuario.Correo = (string)item["Correos"];
                             musuario.Rol = (string)item["Rol"];
                             musuario.Nombres = (string)item["Nombres"];
                             musuario.Apellidos = (string)item["Apellidos"];

@@ -11,7 +11,7 @@ namespace CentralOpticAPI.Controladores
     public class CProducto:Controller
     {
         [HttpGet]
-        [Authorize(Roles = ("Administrador, Empleado"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
         public async Task<ActionResult<List<MProducto>>> Get()
         {
             var funcion = new DProducto();
@@ -19,8 +19,19 @@ namespace CentralOpticAPI.Controladores
             return lista;
         }
 
+        [HttpGet("{CodProducto}")]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        public async Task<ActionResult<List<MProducto>>> Get(string CodProducto)
+        {
+            var funcion = new DProducto();
+            MProducto producto = new MProducto();
+            producto.CodProducto = CodProducto;
+            var lista = await funcion.MostrarProductosbyId(producto);
+            return lista;
+        }
+
         [HttpPost]
-        [Authorize(Roles = ("Administrador, Empleado"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
         public async Task Post([FromBody] MProducto parametros)
         {
             var funcion = new DProducto();
@@ -28,8 +39,8 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{CodProducto}")]
-        [Authorize(Roles = ("Administrador, Empleado"))]
-        public async Task<ActionResult> Put(int CodProducto, [FromBody] MProducto parametros)
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        public async Task<ActionResult> Put(string CodProducto, [FromBody] MProducto parametros)
         {
             var funcion = new DProducto();
             parametros.CodProducto = CodProducto;
@@ -37,16 +48,16 @@ namespace CentralOpticAPI.Controladores
             return NoContent();
         }
 
-        [HttpDelete("{CodProducto}")]
-        [Authorize(Roles = ("Administrador"))]
-        public async Task<ActionResult> Delete(int CodProducto)
-        {
-            var funcion = new DProducto();
-            var parametros = new MProducto();
-            parametros.CodProducto = CodProducto;
-            await funcion.EliminarProducto(parametros);
-            return NoContent();
+        //[HttpDelete("{CodProducto}")]
+        //[Authorize(Roles = ("Administrador"))]
+        //public async Task<ActionResult> Delete(int CodProducto)
+        //{
+        //    var funcion = new DProducto();
+        //    var parametros = new MProducto();
+        //    parametros.CodProducto = CodProducto;
+        //    await funcion.EliminarProducto(parametros);
+        //    return NoContent();
 
-        }
+        //}
     }
 }

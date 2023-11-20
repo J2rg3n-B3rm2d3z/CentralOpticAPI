@@ -2,12 +2,15 @@
 {
     public class MProducto
     {
-        public int CodProducto { get; set; }
-        public int IdMarca { get; set; }
-        public int IdNombreProducto{ get; set; }
+        public string? CodProducto { get; set; }
         public string Descripcion { get; set; }
-        public decimal PrecioActual { get; set; }
-        public bool EstadoProducto { get; set; }
+        public string TipoProducto { get; set; }
+        public bool? Estado{ get; set; }
+        public decimal PrecioVenta { get; set; }
+        public decimal PrecioCompra { get; set; }
+        public int? Cantidad { get; set; }
+        public int? StockMinimo { get; set; }
+        public int? StockMaximo { get; set; }
 
     }
 }

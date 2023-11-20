@@ -25,7 +25,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpGet("{IdUsuario}")]
-        [Authorize(Roles = ("Super Administrador"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
         public async Task<ActionResult<List<MUsuario>>> Get(int IdUsuario)
         {
             var funcion = new DUsuario();
