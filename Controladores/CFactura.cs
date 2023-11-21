@@ -11,7 +11,7 @@ namespace CentralOpticAPI.Controladores
     public class CFactura :Controller
     {
         [HttpGet]
-        [Authorize(Roles = ("Administrador, Empleado"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
         public async Task<ActionResult<List<MFactura>>> Get()
         {
             var funcion = new DFactura();
@@ -19,17 +19,28 @@ namespace CentralOpticAPI.Controladores
             return lista;
         }
 
+        [HttpGet("{NumFactura}")]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        public async Task<ActionResult<List<MFactura>>> Get(int NumFactura)
+        {
+            var funcion = new DFactura();
+            MFactura mFactura = new MFactura();
+            mFactura.NumFactura = NumFactura;
+            var lista = await funcion.MostrarFacturasbyId(mFactura);
+            return lista;
+        }
+
         [HttpPost]
-        [Authorize(Roles = ("Administrador, Empleado"))]
-        public async Task Post([FromBody] MFactura parametros)
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        public async Task Post([FromBody] MFacturaIngreso parametros)
         {
             var funcion = new DFactura();
             await funcion.InsertarFactura(parametros);
         }
 
         [HttpPut("{NumFactura}")]
-        [Authorize(Roles = ("Administrador, Empleado"))]
-        public async Task<ActionResult> Put(int NumFactura, [FromBody] MFactura parametros)
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        public async Task<ActionResult> Put(int NumFactura, [FromBody] MFacturaIngreso parametros)
         {
             var funcion = new DFactura();
             parametros.NumFactura = NumFactura;
@@ -37,16 +48,16 @@ namespace CentralOpticAPI.Controladores
             return NoContent();
         }
 
-        [HttpDelete("{NumFactura}")]
-        [Authorize(Roles = ("Administrador"))]
-        public async Task<ActionResult> Delete(int NumFactura)
-        {
-            var funcion = new DFactura();
-            var parametros = new MFactura();
-            parametros.NumFactura = NumFactura;
-            await funcion.EliminarFactura(parametros);
-            return NoContent();
+        //[HttpDelete("{NumFactura}")]
+        //[Authorize(Roles = ("Administrador"))]
+        //public async Task<ActionResult> Delete(int NumFactura)
+        //{
+        //    var funcion = new DFactura();
+        //    var parametros = new MFactura();
+        //    parametros.NumFactura = NumFactura;
+        //    await funcion.EliminarFactura(parametros);
+        //    return NoContent();
 
-        }
+        //}
     }
 }

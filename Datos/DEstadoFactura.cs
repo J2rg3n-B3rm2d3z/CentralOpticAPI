@@ -13,7 +13,7 @@ namespace CentralOpticAPI.Datos
             var lista = new List<MEstadoFactura>();
             using (var sql = new SqlConnection(cn.cadenaSQL()))
             {
-                using (var cmd = new SqlCommand("SP_mostrarEstadoFacturas", sql))
+                using (var cmd = new SqlCommand("SP_mostrarEstadoFactura", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -22,8 +22,33 @@ namespace CentralOpticAPI.Datos
                         while (await item.ReadAsync())
                         {
                             var mestadofactura = new MEstadoFactura();
-                            mestadofactura.IdEstadoFactura = (int)item["IdEstadoFactura"];
-                            mestadofactura.EstadoFactura = (string)item["EstadoFactura"];
+                            mestadofactura.IdEstadoFactura = (int)item["Id_EstadoFactura"];
+                            mestadofactura.EstadoFactura = (string)item["Estado_Factura"];
+                            lista.Add(mestadofactura);
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+
+        public async Task<List<MEstadoFactura>> MostrarEstadoFacturasById(MEstadoFactura parametros)
+        {
+            var lista = new List<MEstadoFactura>();
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_mostrarEstadoFacturaById", sql))
+                {
+                    await sql.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id_EstadoFactura", parametros.IdEstadoFactura);
+                    using (var item = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await item.ReadAsync())
+                        {
+                            var mestadofactura = new MEstadoFactura();
+                            mestadofactura.IdEstadoFactura = (int)item["Id_EstadoFactura"];
+                            mestadofactura.EstadoFactura = (string)item["Estado_Factura"];
                             lista.Add(mestadofactura);
                         }
                     }

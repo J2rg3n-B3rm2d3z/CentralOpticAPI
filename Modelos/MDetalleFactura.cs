@@ -2,11 +2,12 @@
 {
     public class MDetalleFactura
     {
-        public int IdDetalleFactura { get; set; }
         public int NumFactura { get; set; }
-        public int CodProducto { get; set; }
+        public string? Codigo_Producto { get; set; }
+        public string Descripcion { get; set; }
+        public decimal Precio_Unitario { get; set; }
         public int Cantidad { get; set; }
-        public decimal PrecioUni { get; set; }
+        public decimal Monto { get; set; }
 
     }
 }

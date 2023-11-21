@@ -10,43 +10,24 @@ namespace CentralOpticAPI.Controladores
     [Route("centralopticapi/detallefactura")]
     public class CDetalleFactura : Controller
     {
-        [HttpGet]
-        [Authorize(Roles = ("Administrador, Empleado"))]
-        public async Task<ActionResult<List<MDetalleFactura>>> Get()
+        [HttpGet("{NumFactura}")]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        public async Task<ActionResult<List<MDetalleFactura>>> Get(int NumFactura)
         {
             var funcion = new DDetalleFactura();
-            var lista = await funcion.MostrarDetalleFacturas();
+            MDetalleFactura mDetalleFactura = new MDetalleFactura();
+            mDetalleFactura.NumFactura = NumFactura;
+            var lista = await funcion.MostrarDetalleFacturas(mDetalleFactura);
             return lista;
         }
 
-        [HttpPost]
-        [Authorize(Roles = ("Administrador, Empleado"))]
-        public async Task Post([FromBody] MDetalleFactura parametros)
+        [HttpPost("{NumFactura}")]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        public async Task Post(int NumFactura, [FromBody] MDetalleFactura parametros)
         {
             var funcion = new DDetalleFactura();
+            parametros.NumFactura = NumFactura;
             await funcion.InsertarDetalleFactura(parametros);
-        }
-
-        [HttpPut("{IdDetalleFactura}")]
-        [Authorize(Roles = ("Administrador, Empleado"))]
-        public async Task<ActionResult> Put(int IdDetalleFactura, [FromBody] MDetalleFactura parametros)
-        {
-            var funcion = new DDetalleFactura();
-            parametros.IdDetalleFactura = IdDetalleFactura;
-            await funcion.EditarDetalleFactura(parametros);
-            return NoContent();
-        }
-
-        [HttpDelete("{IdDetalleFactura}")]
-        [Authorize(Roles = ("Administrador"))]
-        public async Task<ActionResult> Delete(int IdDetalleFactura)
-        {
-            var funcion = new DDetalleFactura();
-            var parametros = new MDetalleFactura();
-            parametros.IdDetalleFactura = IdDetalleFactura;
-            await funcion.EliminarDetalleFactura(parametros);
-            return NoContent();
-
         }
     }
 }
