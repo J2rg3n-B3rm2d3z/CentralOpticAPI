@@ -11,7 +11,7 @@ namespace CentralOpticAPI.Controladores
     public class CExamenVista : Controller
     {
         [HttpGet]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista"))]
         public async Task<ActionResult<List<MExamenVista>>> Get()
         {
             var funcion = new DExamenVista();
@@ -20,33 +20,53 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpGet("{NumExamen}")]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
-        public async Task<ActionResult<List<MExamenVista>>> Get(int NumExamen)
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista"))]
+        public async Task<ActionResult<List<MExamenVista>>> Get(string NumExamen)
         {
             var funcion = new DExamenVista();
             MExamenVista mExamenVista = new MExamenVista();
-            mExamenVista.NumExamen = NumExamen;
-            var lista = await funcion.MostrarExamenVistaById(mExamenVista);
-            return lista;
+
+            if (int.TryParse(NumExamen, out int NumExamenInt))
+            {
+                mExamenVista.NumExamen = NumExamenInt;
+                var lista = await funcion.MostrarExamenVistaById(mExamenVista);
+                
+                return lista;
+            }
+            else
+            {
+                if (bool.TryParse(NumExamen, out bool NumExamenBool))
+                {
+                    mExamenVista.Estado = NumExamenBool;
+                    var lista = await funcion.MostrarExamenVistaValido(mExamenVista);
+                    
+                    return lista;
+                }
+                else
+                {
+                    return BadRequest("El formato de peticion no es válido.");
+                }
+            }
+
         }
 
-        //[HttpPost]
-        //[Authorize(Roles = ("Administrador, Empleado"))]
-        //public async Task Post([FromBody] MExamenVista parametros)
-        //{
-        //    var funcion = new DExamenVista();
-        //    await funcion.InsertarExamenVista(parametros);
-        //}
+        [HttpPost]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista"))]
+        public async Task Post([FromBody] MExamenVistaIngreso parametros)
+        {
+            var funcion = new DExamenVista();
+            await funcion.InsertarExamenVista(parametros);
+        }
 
-        //[HttpPut("{NumExamenVista}")]
-        //[Authorize(Roles = ("Administrador, Empleado"))]
-        //public async Task<ActionResult> Put(int NumExamenVista, [FromBody] MExamenVista parametros)
-        //{
-        //    var funcion = new DExamenVista();
-        //    parametros.NumExamen = NumExamenVista;
-        //    await funcion.EditarExamenVista(parametros);
-        //    return NoContent();
-        //}
+        [HttpPut("{NumExamenVista}")]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista"))]
+        public async Task<ActionResult> Put(int NumExamenVista, [FromBody] MExamenVistaIngreso parametros)
+        {
+            var funcion = new DExamenVista();
+            parametros.NumExamen = NumExamenVista;
+            await funcion.EditarExamenVista(parametros);
+            return NoContent();
+        }
 
         //[HttpDelete("{NumExamenVista}")]
         //[Authorize(Roles = ("Administrador"))]

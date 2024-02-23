@@ -25,9 +25,19 @@ namespace CentralOpticAPI.Controladores
         {
             var funcion = new DProducto();
             MProducto producto = new MProducto();
-            producto.CodProducto = CodProducto;
-            var lista = await funcion.MostrarProductosbyId(producto);
-            return lista;
+
+            if (bool.TryParse(CodProducto, out bool CodProductoBool))
+            {
+                producto.Estado = CodProductoBool;
+                var lista = await funcion.MostrarProductosActivos(producto);
+                return lista;
+            }
+            else
+            {
+                producto.CodProducto = CodProducto;
+                var lista = await funcion.MostrarProductosbyId(producto);
+                return lista;
+            }
         }
 
         [HttpPost]

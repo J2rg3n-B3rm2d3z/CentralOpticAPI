@@ -11,7 +11,7 @@ namespace CentralOpticAPI.Controladores
     public class CTipoFactura : Controller
     {
         [HttpGet]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task<ActionResult<List<MTipoFactura>>> Get()
         {
             var funcion = new DTipoFactura();
@@ -20,7 +20,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpGet("{Id_TipoFactura}")]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task<ActionResult<List<MTipoFactura>>> Get(int Id_TipoFactura)
         {
             var funcion = new DTipoFactura();

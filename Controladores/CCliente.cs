@@ -30,23 +30,23 @@ namespace CentralOpticAPI.Controladores
             return lista;
         }
 
-        //[HttpPost]
-        //[Authorize(Roles = ("Administrador, Empleado"))]
-        //public async Task Post([FromBody] MCliente parametros)
-        //{
-        //    var funcion = new DCliente();
-        //    await funcion.InsertarCliente(parametros);
-        //}
+        [HttpPost]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        public async Task Post([FromBody] MCliente parametros)
+        {
+            var funcion = new DCliente();
+            await funcion.InsertarCliente(parametros);
+        }
 
-        //[HttpPut("{CodCliente}")]
-        //[Authorize(Roles = ("Administrador, Empleado"))]
-        //public async Task<ActionResult> Put(int CodCliente, [FromBody] MCliente parametros)
-        //{
-        //    var funcion = new DCliente();
-        //    parametros.CodCliente = CodCliente;
-        //    await funcion.EditarCliente(parametros);
-        //    return NoContent();
-        //}
+        [HttpPut("{Codigo_Cliente}")]
+        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        public async Task<ActionResult> Put(int Codigo_Cliente, [FromBody] MCliente parametros)
+        {
+            var funcion = new DCliente();
+            parametros.Codigo_Cliente = Codigo_Cliente;
+            await funcion.EditarCliente(parametros);
+            return NoContent();
+        }
 
         //[HttpDelete("{CodCliente}")]
         //[Authorize(Roles = ("Administrador"))]

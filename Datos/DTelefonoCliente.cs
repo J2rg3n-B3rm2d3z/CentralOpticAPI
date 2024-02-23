@@ -9,30 +9,30 @@ namespace CentralOpticAPI.Datos
     {
         ConexionBD cn = new ConexionBD();
 
-        public async Task<List<MTelefonoCliente>> MostrarTelefonoClientes()
-        {
-            var lista = new List<MTelefonoCliente>();
-            using (var sql = new SqlConnection(cn.cadenaSQL()))
-            {
-                using (var cmd = new SqlCommand("SP_mostrarTelefonoCliente", sql))
-                {
-                    await sql.OpenAsync();
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    using (var item = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await item.ReadAsync())
-                        {
-                            var mtelefonocliente = new MTelefonoCliente();
-                            mtelefonocliente.IdTelefonoCliente = (int)item["IdTelefonoCliente"];
-                            mtelefonocliente.CodCliente = (int)item["CodCliente"];
-                            mtelefonocliente.Telefono = (string)item["Telefono"];
-                            lista.Add(mtelefonocliente);
-                        }
-                    }
-                }
-            }
-            return lista;
-        }
+        //public async Task<List<MTelefonoCliente>> MostrarTelefonoClientes()
+        //{
+        //    var lista = new List<MTelefonoCliente>();
+        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
+        //    {
+        //        using (var cmd = new SqlCommand("SP_mostrarTelefonoCliente", sql))
+        //        {
+        //            await sql.OpenAsync();
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            using (var item = await cmd.ExecuteReaderAsync())
+        //            {
+        //                while (await item.ReadAsync())
+        //                {
+        //                    var mtelefonocliente = new MTelefonoCliente();
+        //                    mtelefonocliente.IdTelefonoCliente = (int)item["IdTelefonoCliente"];
+        //                    mtelefonocliente.CodCliente = (int)item["CodCliente"];
+        //                    mtelefonocliente.Telefono = (string)item["Telefono"];
+        //                    lista.Add(mtelefonocliente);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return lista;
+        //}
 
         public async Task InsertarTelefonoCliente(MTelefonoCliente parametros)
         {
@@ -41,8 +41,8 @@ namespace CentralOpticAPI.Datos
                 using (var cmd = new SqlCommand("SP_insertarTelefonoCliente", sql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@CodCliente", parametros.CodCliente);
-                    cmd.Parameters.AddWithValue("@Telefono", parametros.Telefono);
+                    cmd.Parameters.AddWithValue("@Codigo_Cliente", parametros.Codigo_Cliente);
+                    cmd.Parameters.AddWithValue("@Telefono", parametros.TelefonoNuevo);
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
 
@@ -58,9 +58,9 @@ namespace CentralOpticAPI.Datos
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@IdTelefonoCliente", parametros.IdTelefonoCliente);
-                    cmd.Parameters.AddWithValue("@CodCliente", parametros.CodCliente);
-                    cmd.Parameters.AddWithValue("@Telefono", parametros.Telefono);
+                    cmd.Parameters.AddWithValue("@Codigo_Cliente", parametros.Codigo_Cliente);
+                    cmd.Parameters.AddWithValue("@TelefonoAnt", parametros.TelefonoAnterior);
+                    cmd.Parameters.AddWithValue("@TelefonoNue", parametros.TelefonoNuevo);
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
 
@@ -68,21 +68,21 @@ namespace CentralOpticAPI.Datos
             }
         }
 
-        public async Task EliminarTelefonoCliente(MTelefonoCliente parametros)
-        {
-            using (var sql = new SqlConnection(cn.cadenaSQL()))
-            {
-                using (var cmd = new SqlCommand("SP_eliminarTelefonoCliente", sql))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
+        //public async Task EliminarTelefonoCliente(MTelefonoCliente parametros)
+        //{
+        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
+        //    {
+        //        using (var cmd = new SqlCommand("SP_eliminarTelefonoCliente", sql))
+        //        {
+        //            cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@IdTelefonoCliente", parametros.IdTelefonoCliente);
-                    await sql.OpenAsync();
-                    await cmd.ExecuteNonQueryAsync();
+        //            cmd.Parameters.AddWithValue("@IdTelefonoCliente", parametros.IdTelefonoCliente);
+        //            await sql.OpenAsync();
+        //            await cmd.ExecuteNonQueryAsync();
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
 
     }
 }

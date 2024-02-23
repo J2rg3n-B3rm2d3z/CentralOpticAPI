@@ -37,6 +37,37 @@ namespace CentralOpticAPI.Datos
             return lista;
         }
 
+        public async Task<List<MRegistroProducto>> MostrarRegistroProductoValidos(MRegistroProducto parametros)
+        {
+            var lista = new List<MRegistroProducto>();
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_mostrarRegistroProductoValido", sql))
+                {
+                    await sql.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Valido", parametros.Estado);
+
+                    using (var item = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await item.ReadAsync())
+                        {
+                            var mregistroproducto = new MRegistroProducto();
+                            mregistroproducto.CodigoProducto = (string)item["Codigo_Producto"];
+                            mregistroproducto.Descripcion = (string)item["Descripcion"];
+                            mregistroproducto.NombreEmpresa = (string)item["Nombre_Empresa"];
+                            mregistroproducto.FechaAdquisicion = (DateTime)item["Fecha_Adquisicion"];
+                            mregistroproducto.Cantidad = (int)item["Cantidad"];
+                            mregistroproducto.Costo = (decimal)item["Costo"];
+                            mregistroproducto.Estado = (bool)item["Estado"];
+                            lista.Add(mregistroproducto);
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+
         public async Task InsertarRegistroProducto(MRegistroProducto parametros)
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))

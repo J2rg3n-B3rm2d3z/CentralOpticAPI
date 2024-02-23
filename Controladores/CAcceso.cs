@@ -13,6 +13,7 @@ namespace CentralOpticAPI.Controladores
         public string token { get; set; }
         public string role { get; set; }
         public int id { get; set; }
+        public int NumEmpleado { get; set; }
     }
 
     [ApiController]
@@ -59,6 +60,7 @@ namespace CentralOpticAPI.Controladores
                 TK.token = Generar(usuario);
                 TK.role = usuario.Rol;
                 TK.id = usuario.IdUsuario;
+                TK.NumEmpleado = usuario.Numero_Empleado;
                 return Ok(TK);
             }
 
@@ -96,7 +98,8 @@ namespace CentralOpticAPI.Controladores
                 new Claim(ClaimTypes.GivenName, usuario.Nombres),
                 new Claim(ClaimTypes.Surname, usuario.Apellidos),
                 new Claim(ClaimTypes.Role, usuario.Rol),
-                new Claim("Numero_usuario", usuario.IdUsuario.ToString())
+                new Claim("Numero_usuario", usuario.IdUsuario.ToString()),
+                new Claim("Numero_Empleado", usuario.Numero_Empleado.ToString()),
             };
 
             //Crear el token
@@ -127,6 +130,7 @@ namespace CentralOpticAPI.Controladores
                     Apellidos = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.Surname)?.Value,
                     Rol = usuarioClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value,
                     IdUsuario = int.Parse(usuarioClaims.FirstOrDefault(o => o.Type == "Numero_usuario")?.Value ?? "0"),
+                    Numero_Empleado = int.Parse(usuarioClaims.FirstOrDefault(o => o.Type == "Numero_Empleado")?.Value ?? "0"),
                     Estado = true
                 };
             }

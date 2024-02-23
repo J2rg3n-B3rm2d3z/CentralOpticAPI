@@ -24,7 +24,7 @@ namespace CentralOpticAPI.Datos
                         {
                             var mcliente = new MCliente();
                             mcliente.Codigo_Cliente = (int)item["Codigo_Cliente"];
-                            mcliente.Nombres = (string)item["Nombres"];
+                            mcliente.Nombres = (string)item["Nombres"]; 
                             mcliente.Apellidos = (string)item["Apellidos"];
                             mcliente.Empresa_Asociada = (string)item["Empresa_Asociada"];
                             if (!item.IsDBNull(item.GetOrdinal("Cedula")))
@@ -86,46 +86,51 @@ namespace CentralOpticAPI.Datos
             return lista;
         }
 
-        //public async Task InsertarCliente(MCliente parametros)
-        //{
-        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
-        //    {
-        //        using (var cmd = new SqlCommand("SP_insertarCliente", sql))
-        //        {
-        //            cmd.CommandType = CommandType.StoredProcedure;
+        public async Task InsertarCliente(MCliente parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_insertarCliente", sql))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-        //            cmd.Parameters.AddWithValue("@Cedula", parametros.Cedula);
-        //            cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
-        //            cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
-        //            cmd.Parameters.AddWithValue("@Direccion", SqlDbType.NVarChar).Value = (object)parametros.Direccion ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@Cedula", SqlDbType.NVarChar).Value = (object)parametros.Cedula ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@Direccion", SqlDbType.NVarChar).Value = (object)parametros.Direccion ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@Fecha_Nacimiento", SqlDbType.Date).Value = (object)parametros.FechaNac ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
+                    cmd.Parameters.AddWithValue("@Nombre_E", parametros.Empresa_Asociada);
+                    cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
 
-        //            await sql.OpenAsync();
-        //            await cmd.ExecuteNonQueryAsync();
 
-        //        }
-        //    }
-        //}
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
 
-        //public async Task EditarCliente(MCliente parametros)
-        //{
-        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
-        //    {
-        //        using (var cmd = new SqlCommand("SP_editarCliente", sql))
-        //        {
-        //            cmd.CommandType = CommandType.StoredProcedure;
+                }
+            }
+        }
 
-        //            cmd.Parameters.AddWithValue("@CodCliente", parametros.CodCliente);
-        //            cmd.Parameters.AddWithValue("@Cedula", parametros.Cedula);
-        //            cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
-        //            cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
-        //            cmd.Parameters.AddWithValue("@Direccion", SqlDbType.NVarChar).Value = (object)parametros.Direccion ?? DBNull.Value;
+        public async Task EditarCliente(MCliente parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_editarCliente", sql))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-        //            await sql.OpenAsync();
-        //            await cmd.ExecuteNonQueryAsync();
+                    cmd.Parameters.AddWithValue("@Codigo_Cliente", parametros.Codigo_Cliente);
+                    cmd.Parameters.AddWithValue("@Cedula", SqlDbType.NVarChar).Value = (object)parametros.Cedula ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@Direccion", SqlDbType.NVarChar).Value = (object)parametros.Direccion ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@Fecha_Nacimiento", SqlDbType.Date).Value = (object)parametros.FechaNac ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
+                    cmd.Parameters.AddWithValue("@Nombre_E", parametros.Empresa_Asociada);
+                    cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
 
-        //        }
-        //    }
-        //}
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+
+                }
+            }
+        }
 
         //public async Task EliminarCliente(MCliente parametros)
         //{

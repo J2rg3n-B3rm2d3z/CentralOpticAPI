@@ -78,43 +78,83 @@ namespace CentralOpticAPI.Datos
             return lista;
         }
 
-        //public async Task InsertarEmpleado(MEmpleado parametros)
-        //{
-        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
-        //    {
-        //        using (var cmd = new SqlCommand("SP_insertarEmpleado", sql))
-        //        {
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //            cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
-        //            cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
-        //            cmd.Parameters.AddWithValue("@Direccion", parametros.Direccion);
+        public async Task<List<MEmpleado>> MostrarEmpleadoActivo(MEmpleado parametros)
+        {
+            var lista = new List<MEmpleado>();
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_mostrarEmpleadosActivos", sql))
+                {
+                    await sql.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Estado", parametros.Estado);
+                    using (var item = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await item.ReadAsync())
+                        {
+                            var mEmpleado = new MEmpleado();
+                            mEmpleado.NumEmpleado = (int)item["Numero_Empleado"];
+                            mEmpleado.Cedula = (string)item["Cedula"];
+                            mEmpleado.Nombres = (string)item["Nombres"];
+                            mEmpleado.Apellidos = (string)item["Apellidos"];
+                            mEmpleado.Direccion = (string)item["Direccion"];
+                            mEmpleado.FechaNac = (DateTime)item["Fecha_Nacimiento"];
+                            mEmpleado.Edad = (int)item["Edad"];
+                            if (!item.IsDBNull(item.GetOrdinal("Telefonos")))
+                                mEmpleado.Telefonos = (string)item["Telefonos"];
+                            if (!item.IsDBNull(item.GetOrdinal("Correos")))
+                                mEmpleado.Correos = (string)item["Correos"];
+                            mEmpleado.Estado = (bool)item["Estado"];
+                            lista.Add(mEmpleado);
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
 
-        //            await sql.OpenAsync();
-        //            await cmd.ExecuteNonQueryAsync();
+        public async Task InsertarEmpleado(MEmpleado parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_insertarEmpleado", sql))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
+                    cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
+                    cmd.Parameters.AddWithValue("@Cedula", parametros.Cedula);
+                    cmd.Parameters.AddWithValue("@Direccion", parametros.Direccion);
+                    cmd.Parameters.AddWithValue("@Fecha_Nacimiento", parametros.FechaNac);
 
-        //        }
-        //    }
-        //}
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
 
-        //public async Task EditarEmpleado(MEmpleado parametros)
-        //{
-        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
-        //    {
-        //        using (var cmd = new SqlCommand("SP_editarEmpleado", sql))
-        //        {
-        //            cmd.CommandType = CommandType.StoredProcedure;
+                }
+            }
+        }
 
-        //            cmd.Parameters.AddWithValue("@NumEmpleado", parametros.NumEmpleado);
-        //            cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
-        //            cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
-        //            cmd.Parameters.AddWithValue("@Direccion", parametros.Direccion);
+        public async Task EditarEmpleado(MEmpleado parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_editarEmpleado", sql))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-        //            await sql.OpenAsync();
-        //            await cmd.ExecuteNonQueryAsync();
+                    cmd.Parameters.AddWithValue("@Numero_Empleado", parametros.NumEmpleado);
+                    cmd.Parameters.AddWithValue("@Nombres", parametros.Nombres);
+                    cmd.Parameters.AddWithValue("@Apellidos", parametros.Apellidos);
+                    cmd.Parameters.AddWithValue("@Cedula", parametros.Cedula);
+                    cmd.Parameters.AddWithValue("@Direccion", parametros.Direccion);
+                    cmd.Parameters.AddWithValue("@Fecha_Nacimiento", parametros.FechaNac);
+                    cmd.Parameters.AddWithValue("@Estado", parametros.Estado);
 
-        //        }
-        //    }
-        //}
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+
+                }
+            }
+        }
 
         //public async Task EliminarEmpleado(MEmpleado parametros)
         //{

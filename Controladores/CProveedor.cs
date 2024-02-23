@@ -12,7 +12,7 @@ namespace CentralOpticAPI.Controladores
     public class CProveedor : Controller
     {
         [HttpGet]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task<ActionResult<List<MProveedor>>> Get()
         {
             var funcion = new DProveedor();
@@ -21,33 +21,52 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpGet("{CodigoProveedor}")]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
-        public async Task<ActionResult<List<MProveedor>>> Get(int CodigoProveedor)
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
+        public async Task<ActionResult<List<MProveedor>>> Get(string CodigoProveedor)
         {
             var funcion = new DProveedor();
             MProveedor proveedor = new MProveedor();
-            proveedor.CodigoProveedor = CodigoProveedor;
-            var lista = await funcion.MostrarProveedorById(proveedor);
-            return lista;
+
+            if (int.TryParse(CodigoProveedor, out int CodigoProveedorInt))
+            {
+                proveedor.CodigoProveedor = CodigoProveedorInt;
+                var lista = await funcion.MostrarProveedorById(proveedor);
+                
+                return lista;
+            }
+            else
+            {
+                if (bool.TryParse(CodigoProveedor, out bool CodigoProveedorBool))
+                {
+                    proveedor.Estado = CodigoProveedorBool;
+                    var lista = await funcion.MostrarProveedorActivos(proveedor);
+
+                    return lista;
+                }
+                else
+                {
+                    return BadRequest("El formato de peticion no es válido.");
+                }
+            }
         }
 
-        //[HttpPost]
-        //[Authorize(Roles = ("Administrador, Empleado"))]
-        //public async Task Post([FromBody] MProveedor parametros)
-        //{
-        //    var funcion = new DProveedor();
-        //    await funcion.InsertarProveedor(parametros);
-        //}
+        [HttpPost]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
+        public async Task Post([FromBody] MProveedor parametros)
+        {
+            var funcion = new DProveedor();
+            await funcion.InsertarProveedor(parametros);
+        }
 
-        //[HttpPut("{IdProveedor}")]
-        //[Authorize(Roles = ("Administrador, Empleado"))]
-        //public async Task<ActionResult> Put(int IdProveedor, [FromBody] MProveedor parametros)
-        //{
-        //    var funcion = new DProveedor();
-        //    parametros.IdProveedor = IdProveedor;
-        //    await funcion.EditarProveedor(parametros);
-        //    return NoContent();
-        //}
+        [HttpPut("{CodigoProveedor}")]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
+        public async Task<ActionResult> Put(int CodigoProveedor, [FromBody] MProveedor parametros)
+        {
+            var funcion = new DProveedor();
+            parametros.CodigoProveedor = CodigoProveedor;
+            await funcion.EditarProveedor(parametros);
+            return NoContent();
+        }
 
         //[HttpDelete("{IdProveedor}")]
         //[Authorize(Roles = ("Administrador"))]

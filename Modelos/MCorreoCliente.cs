@@ -2,8 +2,8 @@
 {
     public class MCorreoCliente
     {
-        public int IdCorreoCliente { get; set; }
-        public int CodCliente { get; set; }
-        public string Correo { get; set; }
+        public int Codigo_Cliente { get; set; }
+        public string CorreoNuevo { get; set; }
+        public string? CorreoAnterior { get; set; }
     }
 }

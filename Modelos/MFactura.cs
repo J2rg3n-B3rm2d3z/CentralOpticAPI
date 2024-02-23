@@ -15,6 +15,8 @@
         public decimal Descuento { get; set; }
         public decimal? Subtotal { get; set; }
         public decimal? Total { get; set; }
+        public decimal? Total_Pagado { get; set; }
+        public decimal? Faltante { get; set; }
         public string? Descripcion_Credito { get; set; }
 
 

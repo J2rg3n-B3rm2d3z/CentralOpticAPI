@@ -26,17 +26,38 @@ namespace CentralOpticAPI.Controladores
 
         [HttpGet("{IdUsuario}")]
         [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
-        public async Task<ActionResult<List<MUsuario>>> Get(int IdUsuario)
+        public async Task<ActionResult<List<MUsuario>>> Get(string IdUsuario)
         {
             var funcion = new DUsuario();
             MUsuario usuario = new MUsuario();
-            usuario.IdUsuario = IdUsuario;
-            var lista = await funcion.MostrarUsuariosById(usuario);
-            foreach (var item in lista)
+
+            if(int.TryParse(IdUsuario, out int idUsuarioInt))
             {
-                item.Clave = null;
+                usuario.IdUsuario = idUsuarioInt;
+                var lista = await funcion.MostrarUsuariosById(usuario);
+                foreach (var item in lista)
+                {
+                    item.Clave = null;
+                }
+                return lista;
             }
-            return lista;
+            else
+            {
+                if(bool.TryParse(IdUsuario, out bool idUsuarioBool))
+                {
+                    usuario.Estado = idUsuarioBool;
+                    var lista = await funcion.MostrarUsuariosActivos(usuario);
+                    foreach (var item in lista)
+                    {
+                        item.Clave = null;
+                    }
+                    return lista;
+                }
+                else
+                {
+                    return BadRequest("El formato de peticion no es válido.");
+                }
+            }
         }
 
         [HttpPost]

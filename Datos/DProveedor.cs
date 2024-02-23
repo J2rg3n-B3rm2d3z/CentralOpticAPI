@@ -76,43 +76,77 @@ namespace CentralOpticAPI.Datos
             return lista;
         }
 
-        //public async Task InsertarProveedor(MProveedor parametros)
-        //{
-        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
-        //    {
-        //        using (var cmd = new SqlCommand("SP_insertarProveedor", sql))
-        //        {
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //            cmd.Parameters.AddWithValue("@Nombre", parametros.Nombre);
-        //            cmd.Parameters.AddWithValue("@Propietario", SqlDbType.NVarChar).Value = (object)parametros.Propietario ?? DBNull.Value;
-        //            cmd.Parameters.AddWithValue("@Direccion", parametros.Direccion);
+        public async Task<List<MProveedor>> MostrarProveedorActivos(MProveedor parametros)
+        {
+            var lista = new List<MProveedor>();
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_mostrarProveedoresActivos", sql))
+                {
+                    await sql.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Estado", parametros.Estado);
+                    using (var item = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await item.ReadAsync())
+                        {
+                            var mProveedor = new MProveedor();
+                            mProveedor.CodigoProveedor = (int)item["Codigo_Proveedor"];
+                            mProveedor.Nombre_Empresa = (string)item["Nombre_Empresa"];
+                            if (!item.IsDBNull(item.GetOrdinal("Nombre_Contacto")))
+                                mProveedor.Contacto = (string)item["Nombre_Contacto"];
+                            if (!item.IsDBNull(item.GetOrdinal("Direccion")))
+                                mProveedor.Direccion = (string)item["Direccion"];
+                            mProveedor.Estado = (bool)item["Estado"];
+                            if (!item.IsDBNull(item.GetOrdinal("Telefonos")))
+                                mProveedor.Telefonos = (string)item["Telefonos"];
+                            if (!item.IsDBNull(item.GetOrdinal("Correos")))
+                                mProveedor.Correos = (string)item["Correos"];
+                            lista.Add(mProveedor);
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
 
-        //            await sql.OpenAsync();
-        //            await cmd.ExecuteNonQueryAsync();
+        public async Task InsertarProveedor(MProveedor parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_InsertarProveedor", sql))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Nombre_Empresa", parametros.Nombre_Empresa);
+                    cmd.Parameters.AddWithValue("@Nombre_Contacto", SqlDbType.NVarChar).Value = (object)parametros.Contacto ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@Direccion", SqlDbType.NVarChar).Value = (object)parametros.Direccion ?? DBNull.Value;
 
-        //        }
-        //    }
-        //}
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
 
-        //public async Task EditarProveedor(MProveedor parametros)
-        //{
-        //    using (var sql = new SqlConnection(cn.cadenaSQL()))
-        //    {
-        //        using (var cmd = new SqlCommand("SP_editarProveedor", sql))
-        //        {
-        //            cmd.CommandType = CommandType.StoredProcedure;
+                }
+            }
+        }
+        public async Task EditarProveedor(MProveedor parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_EditarProveedor", sql))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-        //            cmd.Parameters.AddWithValue("@IdProveedor", parametros.IdProveedor);
-        //            cmd.Parameters.AddWithValue("@Nombre", parametros.Nombre);
-        //            cmd.Parameters.AddWithValue("@Propietario", SqlDbType.NVarChar).Value = (object)parametros.Propietario ?? DBNull.Value;
-        //            cmd.Parameters.AddWithValue("@Direccion", parametros.Direccion);
+                    cmd.Parameters.AddWithValue("@Codigo_Proveedor", parametros.CodigoProveedor);
+                    cmd.Parameters.AddWithValue("@Nombre_Empresa", parametros.Nombre_Empresa);
+                    cmd.Parameters.AddWithValue("@Nombre_Contacto", SqlDbType.NVarChar).Value = (object)parametros.Contacto ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@Direccion", SqlDbType.NVarChar).Value = (object)parametros.Direccion ?? DBNull.Value;
+                    cmd.Parameters.AddWithValue("@Estado", parametros.Estado);
 
-        //            await sql.OpenAsync();
-        //            await cmd.ExecuteNonQueryAsync();
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
 
-        //        }
-        //    }
-        //}
+                }
+            }
+        }
 
         //public async Task EliminarProveedor(MProveedor parametros)
         //{

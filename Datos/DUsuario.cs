@@ -29,6 +29,7 @@ namespace CentralOpticAPI.Datos
                             if (!item.IsDBNull(item.GetOrdinal("Correos")))
                                 musuario.Correo = (string)item["Correos"];
                             musuario.Rol = (string)item["Rol"];
+                            musuario.Numero_Empleado = (int)item["Numero_Empleado"];
                             musuario.Nombres = (string)item["Nombres"];
                             musuario.Apellidos = (string)item["Apellidos"];
                             musuario.Estado = (bool)item["Estado"];
@@ -65,6 +66,44 @@ namespace CentralOpticAPI.Datos
                             if (!item.IsDBNull(item.GetOrdinal("Correos")))
                                 musuario.Correo = (string)item["Correos"];
                             musuario.Rol = (string)item["Rol"];
+                            musuario.Numero_Empleado = (int)item["Numero_Empleado"];
+                            musuario.Nombres = (string)item["Nombres"];
+                            musuario.Apellidos = (string)item["Apellidos"];
+                            musuario.Estado = (bool)item["Estado"];
+
+                            //byte[] clave = Convert.FromBase64String(musuario.Clave);
+                            //musuario.Clave = System.Text.Encoding.UTF8.GetString(clave);
+
+                            lista.Add(musuario);
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+
+        public async Task<List<MUsuario>> MostrarUsuariosActivos(MUsuario parametros)
+        {
+            var lista = new List<MUsuario>();
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_mostrarUsuariosActivos", sql))
+                {
+                    await sql.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Estado", parametros.Estado);
+                    using (var item = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await item.ReadAsync())
+                        {
+                            var musuario = new MUsuario();
+                            musuario.IdUsuario = (int)item["Numero_Usuario"];
+                            musuario.NombreUsuario = (string)item["Nombre_Usuario"];
+                            musuario.Clave = (string)item["Clave"];
+                            if (!item.IsDBNull(item.GetOrdinal("Correos")))
+                                musuario.Correo = (string)item["Correos"];
+                            musuario.Rol = (string)item["Rol"];
+                            musuario.Numero_Empleado = (int)item["Numero_Empleado"];
                             musuario.Nombres = (string)item["Nombres"];
                             musuario.Apellidos = (string)item["Apellidos"];
                             musuario.Estado = (bool)item["Estado"];

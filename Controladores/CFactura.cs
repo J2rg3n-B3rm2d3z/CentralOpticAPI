@@ -2,6 +2,7 @@
 using CentralOpticAPI.Modelos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
 
 namespace CentralOpticAPI.Controladores
@@ -11,7 +12,7 @@ namespace CentralOpticAPI.Controladores
     public class CFactura :Controller
     {
         [HttpGet]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task<ActionResult<List<MFactura>>> Get()
         {
             var funcion = new DFactura();
@@ -20,18 +21,36 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpGet("{NumFactura}")]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
-        public async Task<ActionResult<List<MFactura>>> Get(int NumFactura)
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
+        public async Task<ActionResult<List<MFactura>>> Get(string NumFactura)
         {
             var funcion = new DFactura();
             MFactura mFactura = new MFactura();
-            mFactura.NumFactura = NumFactura;
-            var lista = await funcion.MostrarFacturasbyId(mFactura);
-            return lista;
+
+            if (int.TryParse(NumFactura, out int NumFacturaInt))
+            {
+                mFactura.NumFactura = NumFacturaInt;
+                var lista = await funcion.MostrarFacturasbyId(mFactura);
+
+                return lista;
+            }
+            else
+            {
+                if (bool.TryParse(NumFactura, out bool NumFacturaBool))
+                {
+                    var lista = await funcion.MostrarFacturasValidas(NumFacturaBool);
+
+                    return lista;
+                }
+                else
+                {
+                    return BadRequest("El formato de peticion no es válido.");
+                }
+            }
         }
 
         [HttpPost]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task Post([FromBody] MFacturaIngreso parametros)
         {
             var funcion = new DFactura();
@@ -39,7 +58,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut("{NumFactura}")]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task<ActionResult> Put(int NumFactura, [FromBody] MFacturaIngreso parametros)
         {
             var funcion = new DFactura();

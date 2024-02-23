@@ -71,6 +71,38 @@ namespace CentralOpticAPI.Datos
             return lista;
         }
 
+        public async Task<List<MProducto>> MostrarProductosActivos(MProducto parametros)
+        {
+            var lista = new List<MProducto>();
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("SP_mostrarProductoActivos", sql))
+                {
+                    await sql.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Estado", parametros.Estado);
+                    using (var item = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await item.ReadAsync())
+                        {
+                            var mproducto = new MProducto();
+                            mproducto.CodProducto = (string)item["Codigo_Producto"];
+                            mproducto.Descripcion = (string)item["Descripcion"];
+                            mproducto.TipoProducto = (string)item["Tipo_Producto"];
+                            mproducto.Estado = (bool)item["Estado"];
+                            mproducto.PrecioVenta = (decimal)item["Precio_Venta"];
+                            mproducto.PrecioCompra = (decimal)item["Precio_Compra"];
+                            mproducto.Cantidad = (int)item["Cantidad"];
+                            mproducto.StockMinimo = (int)item["Stock_Minimo"];
+                            mproducto.StockMaximo = (int)item["Stock_Maximo"];
+                            lista.Add(mproducto);
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+
         public async Task InsertarProducto(MProducto parametros)
         {
             using (var sql = new SqlConnection(cn.cadenaSQL()))

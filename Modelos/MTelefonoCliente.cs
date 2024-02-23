@@ -2,9 +2,9 @@
 {
     public class MTelefonoCliente
     {
-        public int IdTelefonoCliente { get; set; }
-        public int CodCliente { get; set; }
-        public string Telefono { get; set; }
+        public int Codigo_Cliente { get; set; }
+        public string TelefonoNuevo { get; set; }
+        public string? TelefonoAnterior { get; set; }
 
     }
 }

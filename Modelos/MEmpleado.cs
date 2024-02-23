@@ -8,9 +8,9 @@
         public string Cedula { get; set; }  
         public string Direccion { get; set;}
         public DateTime FechaNac { get; set; }
-        public int Edad { get; set; }
+        public int? Edad { get; set; }
         public string? Telefonos { get; set; }
         public string? Correos { get; set; }
-        public bool Estado {  get; set; }
+        public bool? Estado {  get; set; }
     }
 }

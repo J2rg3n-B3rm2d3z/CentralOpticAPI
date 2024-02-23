@@ -11,7 +11,7 @@ namespace CentralOpticAPI.Controladores
     public class CEmpleado : Controller
     {
         [HttpGet]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador"))]
         public async Task<ActionResult<List<MEmpleado>>> Get()
         {
             var funcion = new DEmpleado();
@@ -20,33 +20,51 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpGet("{NumEmpleado}")]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
-        public async Task<ActionResult<List<MEmpleado>>> Get(int NumEmpleado)
+        [Authorize(Roles = ("Super Administrador, Administrador"))]
+        public async Task<ActionResult<List<MEmpleado>>> Get(string NumEmpleado)
         {
             var funcion = new DEmpleado();
             MEmpleado mempleado = new MEmpleado();
-            mempleado.NumEmpleado = NumEmpleado;
-            var lista = await funcion.MostrarEmpleadoById(mempleado);
-            return lista;
+            if (int.TryParse(NumEmpleado, out int NumEmpleadoInt))
+            {
+                mempleado.NumEmpleado = NumEmpleadoInt;
+                var lista = await funcion.MostrarEmpleadoById(mempleado);
+          
+                return lista;
+            }
+            else
+            {
+                if (bool.TryParse(NumEmpleado, out bool NumEmpleadoBool))
+                {
+                    mempleado.Estado = NumEmpleadoBool;
+                    var lista = await funcion.MostrarEmpleadoActivo(mempleado);
+
+                    return lista;
+                }
+                else
+                {
+                    return BadRequest("El formato de peticion no es válido.");
+                }
+            }
         }
 
-        //[HttpPost]
-        //[Authorize(Roles = ("Administrador, Empleado"))]
-        //public async Task Post([FromBody] MEmpleado parametros)
-        //{
-        //    var funcion = new DEmpleado();
-        //    await funcion.InsertarEmpleado(parametros);
-        //}
+        [HttpPost]
+        [Authorize(Roles = ("Super Administrador, Administrador"))]
+        public async Task Post([FromBody] MEmpleado parametros)
+        {
+            var funcion = new DEmpleado();
+            await funcion.InsertarEmpleado(parametros);
+        }
 
-        //[HttpPut("{NumEmpleado}")]
-        //[Authorize(Roles = ("Administrador, Empleado"))]
-        //public async Task<ActionResult> Put(int NumEmpleado, [FromBody] MEmpleado parametros)
-        //{
-        //    var funcion = new DEmpleado();
-        //    parametros.NumEmpleado = NumEmpleado;
-        //    await funcion.EditarEmpleado(parametros);
-        //    return NoContent();
-        //}
+        [HttpPut("{NumEmpleado}")]
+        [Authorize(Roles = ("Super Administrador, Administrador"))]
+        public async Task<ActionResult> Put(int NumEmpleado, [FromBody] MEmpleado parametros)
+        {
+            var funcion = new DEmpleado();
+            parametros.NumEmpleado = NumEmpleado;
+            await funcion.EditarEmpleado(parametros);
+            return NoContent();
+        }
 
         //[HttpDelete("{NumEmpleado}")]
         //[Authorize(Roles = ("Administrador"))]

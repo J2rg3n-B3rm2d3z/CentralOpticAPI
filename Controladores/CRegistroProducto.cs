@@ -11,7 +11,7 @@ namespace CentralOpticAPI.Controladores
     public class CRegistroProducto : Controller
     {
         [HttpGet]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task<ActionResult<List<MRegistroProducto>>> Get()
         {
             var funcion = new DRegistroProducto();
@@ -19,8 +19,19 @@ namespace CentralOpticAPI.Controladores
             return lista;
         }
 
+        [HttpGet("{Estado}")]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
+        public async Task<ActionResult<List<MRegistroProducto>>> Get(bool Estado)
+        {
+            var funcion = new DRegistroProducto();
+            var mRegistroProducto = new MRegistroProducto();
+            mRegistroProducto.Estado = Estado;
+            var lista = await funcion.MostrarRegistroProductoValidos(mRegistroProducto);
+            return lista;
+        }
+
         [HttpPost]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task Post([FromBody] MRegistroProducto parametros)
         {
             var funcion = new DRegistroProducto();
@@ -28,7 +39,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPut]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task<ActionResult> Put([FromBody] MRegistroProducto parametros)
         {
             var funcion = new DRegistroProducto();

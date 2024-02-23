@@ -11,7 +11,7 @@ namespace CentralOpticAPI.Controladores
     public class CDetalleFactura : Controller
     {
         [HttpGet("{NumFactura}")]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task<ActionResult<List<MDetalleFactura>>> Get(int NumFactura)
         {
             var funcion = new DDetalleFactura();
@@ -22,7 +22,7 @@ namespace CentralOpticAPI.Controladores
         }
 
         [HttpPost("{NumFactura}")]
-        [Authorize(Roles = ("Super Administrador, Administrador, Optometrista, Venta"))]
+        [Authorize(Roles = ("Super Administrador, Administrador, Venta"))]
         public async Task Post(int NumFactura, [FromBody] MDetalleFactura parametros)
         {
             var funcion = new DDetalleFactura();
